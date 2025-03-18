@@ -18,10 +18,7 @@ class MainActivity : ComponentActivity() {
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
       setContent {
-         // Obtain a global instance of your SettingsViewModel.
-         // This should be shared by the SettingsScreen and the theme.
          val settingsViewModel: SettingsViewModel = viewModel()
-         // Collect dark mode state (you can set an initial value if needed)
          val darkModeEnabled by settingsViewModel.darkModeEnabled.collectAsState(initial = false)
 
          AlbumReviewTheme(useDarkTheme = darkModeEnabled) {

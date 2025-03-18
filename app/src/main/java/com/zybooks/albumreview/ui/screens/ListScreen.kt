@@ -12,7 +12,9 @@ import com.zybooks.albumreview.data.Review
 import com.zybooks.albumreview.viewmodel.ListViewModel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -24,7 +26,6 @@ fun ListScreen(
     onSettingsClick: () -> Unit,
     viewModel: ListViewModel = viewModel()
 ) {
-    // Use LiveData from the repository as the single source of truth.
     val reviews by viewModel.reviews.observeAsState(emptyList())
 
     Scaffold(
@@ -46,25 +47,48 @@ fun ListScreen(
     ) { padding ->
         LazyColumn(modifier = Modifier.padding(padding)) {
             items(reviews) { review ->
-                ReviewCard(review, onReviewClick)
+                ReviewCard(
+                    review = review,
+                    onReviewClick = onReviewClick,
+                    onDeleteClick = { reviewToDelete ->
+                        viewModel.deleteReview(reviewToDelete.id)
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun ReviewCard(review: Review, onReviewClick: (Review) -> Unit) {
+fun ReviewCard(
+    review: Review,
+    onReviewClick: (Review) -> Unit,
+    onDeleteClick: (Review) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onReviewClick(review) }
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = review.albumName, style = MaterialTheme.typography.titleMedium)
-            Text(text = "Artist: ${review.artistName}")
-            Text(text = "Rating: ${review.rating}/10")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = review.albumName, style = MaterialTheme.typography.titleMedium)
+                Text(text = "Artist: ${review.artistName}")
+                Text(text = "Rating: ${review.rating}/10")
+            }
+            IconButton(onClick = { onDeleteClick(review) }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete Review"
+                )
+            }
         }
     }
 }
-

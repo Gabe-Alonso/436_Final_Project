@@ -33,7 +33,7 @@ fun AddReviewScreen(
 ) {
     var albumName by remember { mutableStateOf("") }
     var artistName by remember { mutableStateOf("") }
-    var rating by remember { mutableFloatStateOf(5f) } // Default rating
+    var rating by remember { mutableFloatStateOf(5f) }
     var reviewText by remember { mutableStateOf("") }
 
     val context = LocalContext.current
@@ -66,7 +66,7 @@ fun AddReviewScreen(
             value = rating,
             onValueChange = { rating = it },
             valueRange = 1f..10f,
-            steps = 3, // Allows for whole number ratings
+            steps = 10,
             modifier = Modifier.fillMaxWidth()
         )
 

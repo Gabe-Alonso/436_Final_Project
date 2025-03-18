@@ -23,7 +23,6 @@ fun AlbumApp(settingsViewModel: SettingsViewModel) {
 
     NavHost(navController, startDestination = "list") {
         composable("list") {
-            // Properly initialize the ListViewModel from the current scope
             val listViewModel: ListViewModel = viewModel()
             ListScreen(
                 onReviewClick = { review ->
@@ -42,10 +41,8 @@ fun AlbumApp(settingsViewModel: SettingsViewModel) {
         }
         composable("addReview") {
             val context = LocalContext.current
-            // Initialize your Room database
             val database = AppDatabase.getDatabase(context)
             val repository = ReviewRepository(database.reviewDao())
-            // Create your ViewModel using the custom factory
             val addReviewViewModel: AddReviewViewModel = viewModel(
                 factory = AddReviewViewModelFactory(repository)
             )
@@ -65,7 +62,6 @@ fun AlbumApp(settingsViewModel: SettingsViewModel) {
         }
 
         composable("settings") {
-            // Pass the same settingsViewModel so that changes here affect the global state.
             SettingsScreen(viewModel = settingsViewModel, onBack = { navController.popBackStack() })
         }
     }

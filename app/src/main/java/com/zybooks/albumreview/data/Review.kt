@@ -10,5 +10,5 @@ data class Review(
    val artistName: String,
    val rating: Int,
    val reviewText: String,
-   val imageUri: String? = null  // Store image as a URI
+   val imageUri: String? = null
 )
